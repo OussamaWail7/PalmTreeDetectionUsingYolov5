@@ -44,6 +44,7 @@ from utils.general import (LOGGER, check_file, check_img_size, check_imshow, che
                            increment_path, non_max_suppression, print_args, scale_coords, strip_optimizer, xyxy2xywh)
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, time_sync
+from utils.torch_utils import plot_one_box
 
 
 @torch.no_grad()
@@ -170,6 +171,10 @@ def run(
                     if save_crop:
                         save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
+
+
+            l = s[1:s.find('Palm Tree')].split()[-1]
+
             # Stream results
             im0 = annotator.result()
             if view_img:
@@ -178,6 +183,9 @@ def run(
 
             # Save results (image with detections)
             if save_img:
+                if ('Palm Tree' or 'Tree') in s:
+                     im0 = plot_one_box(im0,(255,255,255),str(l) + " Palm Tree" )
+
                 if dataset.mode == 'image':
                     cv2.imwrite(save_path, im0)
                 else:  # 'video' or 'stream'

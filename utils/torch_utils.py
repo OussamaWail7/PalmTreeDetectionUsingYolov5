@@ -17,6 +17,7 @@ import torch
 import torch.distributed as dist
 import torch.nn as nn
 import torch.nn.functional as F
+import cv2
 
 from utils.general import LOGGER, file_date, git_describe
 
@@ -314,3 +315,14 @@ class ModelEMA:
     def update_attr(self, model, include=(), exclude=('process_group', 'reducer')):
         # Update EMA attributes
         copy_attr(self.ema, model, include, exclude)
+
+
+def plot_one_box(img, color= None, label=None): 
+     # Plots one bounding box on image img 
+     font_cv = cv2.FONT_HERSHEY_SIMPLEX
+     cord = (0,50)
+     form = cv2.LINE_AA
+     if label: 
+         cv2.rectangle(img, (0,5), (220, 63),color= (0 , 0 , 0), thickness=-1)
+         cv2.putText(img,label,cord, font_cv, 1,color,1,form) 
+     return img
